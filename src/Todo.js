@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Todo.css';
 
 class Todo extends Component {
 
@@ -14,6 +15,7 @@ class Todo extends Component {
         this.toggleEdit = this.toggleEdit.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.updateTask = this.updateTask.bind(this);
+        this.handleCompleted = this.handleCompleted.bind(this);
     }
 
     handleRemove() {
@@ -34,22 +36,28 @@ class Todo extends Component {
         this.setState({ task : evt.target.value});
     }
 
+    handleCompleted() {
+        this.props.completedTodo(this.props.id);
+    }
+
     render() {
         let {task} = this.props;
         let result;
         
         if(this.state.isEditing){
             result = (
-                <form onSubmit = {this.handleEdit}>
-                    <input type = "text" name = "editTodo" value = {this.state.task} onChange = {this.updateTask} />
-                    <button>Save</button>
-                </form>
+                <div className = "Todo">
+                    <form onSubmit = {this.handleEdit}>
+                        <input type = "text" name = "editTodo" value = {this.state.task} onChange = {this.updateTask} />
+                        <button>Save</button>
+                    </form>
+                </div>
             )
         }
         else {
             result = (
-                <div>
-                    <li>{task}</li>
+                <div className = "Todo">
+                    <li className = {this.props.completed ? "Todo-task Completed" : "Todo-task"} onClick = {this.handleCompleted}>{task}</li>
                     <button onClick = {this.handleRemove}>Delete</button>
                     <button onClick = {this.toggleEdit}>Edit</button>
                 </div>
